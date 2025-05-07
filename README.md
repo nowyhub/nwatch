@@ -1,3 +1,6 @@
+![Image Alt]([image_url](https://github.com/Zenxoxz/nwatch/blob/main/proofworking.png?raw=true)).
+
+
 Nwatch is a lightweight IP logger disguised as a ping pong game. It collects victim data upon interaction and sends it to a Discord webhook.
 
 ⚙️ Setup
