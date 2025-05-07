@@ -1,5 +1,4 @@
-
-Nwatch is a lightweight IP logger disguised as a ping pong game. It collects visitor data upon interaction and sends it to a Discord webhook.
+Nwatch is a lightweight IP logger disguised as a ping pong game. It collects victim data upon interaction and sends it to a Discord webhook.
 
 ⚙️ Setup
 Clone the repo:
