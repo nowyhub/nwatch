@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        canvas {
+            border: 2px solid white;
+            background-color: #000;
+        }
+        .controls {
+            margin-top: 20px;
+            font-size: 18px;
+            color: white;
+        }
+        .score {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pong" width="600" height="400"></canvas>
+    <div class="controls">
+        <p>Controls:</p>
+        <p>Use "Up" and "Down" arrow keys to move your paddle.</p>
+    </div>
+    <div class="score">
+        <p>Player: <span id="playerScore">0</span> - AI: <span id="aiScore">0</span></p>
+    </div>
+
+    <script>
+        // Set up the canvas
+        const canvas = document.getElementById('pong');
+        const ctx = canvas.getContext('2d');
+
+        // Ball object
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 10,
+            speed: 4,
+            dx: 4, // Horizontal movement
+            dy: 4  // Vertical movement
+        };
+
+        // Left paddle (player)
+        const paddleWidth = 10, paddleHeight = 80;
+        let leftPaddle = {
+            x: 0,
+            y: canvas.height / 2 - paddleHeight / 2,
+            width: paddleWidth,
+            height: paddleHeight,
+            dy: 0 // Movement speed for the left paddle
+        };
+
+        // Right paddle (AI)
+        let rightPaddle = {
+            x: canvas.width - paddleWidth,
+            y: canvas.height / 2 - paddleHeight / 2,
+            width: paddleWidth,
+            height: paddleHeight,
+            dy: 4 // AI speed
+        };
+
+        // Scores
+        let playerScore = 0;
+        let aiScore = 0;
+
+        // Control the left paddle (player)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                leftPaddle.dy = -6; // Move up
+            } else if (e.key === 'ArrowDown') {
+                leftPaddle.dy = 6; // Move down
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                leftPaddle.dy = 0; // Stop movement when key is released
+            }
+        });
+
+        // Function to update the game
+        function update() {
+            // Move the ball
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Move the left paddle (player)
+            leftPaddle.y += leftPaddle.dy;
+            if (leftPaddle.y < 0) leftPaddle.y = 0; // Prevent moving out of bounds
+            if (leftPaddle.y + leftPaddle.height > canvas.height) leftPaddle.y = canvas.height - leftPaddle.height; // Prevent going below the canvas
+
+            // AI (right paddle) moves automatically
+            if (rightPaddle.y + rightPaddle.height / 2 < ball.y) {
+                rightPaddle.y += rightPaddle.dy; // Move down
+            } else {
+                rightPaddle.y -= rightPaddle.dy; // Move up
+            }
+
+            // Ball collisions with top/bottom walls
+            if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+                ball.dy = -ball.dy; // Reverse the vertical direction
+            }
+
+            // Ball collisions with paddles
+            if (ball.x - ball.radius < leftPaddle.x + leftPaddle.width && ball.y > leftPaddle.y && ball.y < leftPaddle.y + leftPaddle.height) {
+                ball.dx = -ball.dx; // Bounce off the left paddle
+            }
+
+            if (ball.x + ball.radius > rightPaddle.x && ball.y > rightPaddle.y && ball.y < rightPaddle.y + rightPaddle.height) {
+                ball.dx = -ball.dx; // Bounce off the right paddle
+            }
+
+            // Ball goes out of bounds (left side)
+            if (ball.x - ball.radius < 0) {
+                aiScore++; // AI scores
+                resetBall();
+            }
+
+            // Ball goes out of bounds (right side)
+            if (ball.x + ball.radius > canvas.width) {
+                playerScore++; // Player scores
+                resetBall();
+            }
+
+            // Update the score display
+            document.getElementById('playerScore').innerText = playerScore;
+            document.getElementById('aiScore').innerText = aiScore;
+
+            draw();
+        }
+
+        // Reset the ball to the center
+        function resetBall() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
