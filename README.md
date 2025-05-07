@@ -22,7 +22,7 @@ Nwatch is a lightweight IP logger disguised as a ping pong game. It collects vis
 ```bash
 git clone https://github.com/Zenxoxz/nwatch.git
 cd nwatch
-
+```
 
 ⚠️ Disclaimer
 This tool is intended for educational and ethical use only. Unauthorized use to collect personal data without consent may violate privacy laws and Discord's terms of service. Use responsibly.
