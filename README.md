@@ -3,7 +3,7 @@
 
 # Nwatch - IP Logger & Visitor Monitor 🕵️‍♂️
 
-**Need help or want to connect with others? [Join the server](https://discord.gg/zZ7p8Pbw).**
+**Need help or want to connect with others? [Join the server](https://discord.gg/gMmYcQKGHm).**
 
 Nwatch is a lightweight IP logger disguised as a ping pong game. It collects visitor data upon interaction and sends it to a Discord webhook.
 
